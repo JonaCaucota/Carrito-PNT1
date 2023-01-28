@@ -1,14 +1,14 @@
 # Carrito de Compras ##
 
 ## Objetivos ##
-Desarrollar un sistema, que permita la administraci贸n del stock de productos a una PYME que tiene algunas sucursales de venta de ropa (de cara a los empleados): Empleados, Clientes, Productos, Categorias, Compras, Carritos, Sucursal, StockItem, etc., como as铆 tambi茅n, permitir a los clientes, realizar compras Online.
-Utilizar Visual Studio 2019 preferentemente y crear una aplicaci贸n utilizando ASP.NET MVC Core (versi贸n a definir por el docente 3.1 o 6.0).
+Desarrollar un sistema, que permita la administración del stock de productos a una PYME que tiene algunas sucursales de venta de ropa (de cara a los empleados): Empleados, Clientes, Productos, Categorias, Compras, Carritos, Sucursal, StockItem, etc., como así también, permitir a los clientes, realizar compras Online.
+Utilizar Visual Studio 2019 preferentemente y crear una aplicación utilizando ASP.NET MVC Core (versión a definir por el docente 3.1 o 6.0).
 
 <hr />
 
 ## Enunciado ##
 La idea principal de este trabajo práctico, es que Uds. se comporten como un equipo de desarrollo.
-Este documento, les acerca, un equivalente al resultado de una primera entrevista entre el cliente y alguien del equipo, el cual relev贸 e identific贸 la informaci贸n aqu铆 contenida. 
+Este documento, les acerca, un equivalente al resultado de una primera entrevista entre el cliente y alguien del equipo, el cual relevó e identificó la información aquí contenida. 
 A partir de este momento, deberían comprender lo que se esta requiriendo y construir dicha aplicación, 
 
 Deben recopilar todas las dudas que tengan y evacuarlas con su nexo (el docente) de cara al cliente. De esta manera, él nos ayudaría a conseguir la información ya un poco más procesada. 
@@ -30,7 +30,7 @@ Body:
 
 **Body:**
 
-1.La relaci贸n del paciente con Turno es 1:1 o 1:N?
+1.La relación del paciente con Turno es 1:1 o 1:N?
 
 2.Está bien que encaremos la validación del turno activo, con una propiedad booleana en el Turno?
 

@@ -3,6 +3,6 @@
     public class Empleado
     {
         public string DNI { get; set; }
-        public string legajo { get; set; }
+        public string Legajo { get; set; }
     }
 }

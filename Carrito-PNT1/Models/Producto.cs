@@ -2,10 +2,12 @@
 {
     public class Producto
     {
-        public string nombre { get; set; }
-        public string descripcion { get;set; }
-        public double precioVigente { get; set; }
-        public Boolean activo { get; set; }
-        public Categoria categoria { get; set; }
+        public int ProductoId { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get;set; }
+        public double PrecioVigente { get; set; }
+        public Boolean Activo { get; set; }
+        public Categoria Categoria { get; set; }
+        public int CategoriaId { get; set; }
     }
 }

@@ -4,10 +4,13 @@ namespace Carrito_PNT1.Models
 {
     public class CarritoItem
     {
-        public Carrito carrito { get; set; }
-        public Producto producto { get; set; }
-        public double valorUnitario { get; set; }
-        public BigInteger cantidad  { get; set; }
-        public double subtotal { get; set; }
+        public int CarritoItemId { get; set; }
+        public Carrito Carrito { get; set; }
+        public int CarritoId { get; set; } 
+        public Producto Producto { get; set; }
+        public int ProductoId { get; set; }
+        public double ValorUnitario { get; set; }
+        public int Cantidad  { get; set; }
+        public double Subtotal { get; set; }
     }
 }

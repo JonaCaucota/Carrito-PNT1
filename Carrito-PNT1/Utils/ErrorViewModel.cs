@@ -1,4 +1,4 @@
-namespace Carrito_PNT1.Models
+namespace Carrito_PNT1.Utils
 {
     public class ErrorViewModel
     {

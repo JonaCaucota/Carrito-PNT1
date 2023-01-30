@@ -1,11 +1,23 @@
-﻿namespace Carrito_PNT1.Models
+﻿using Carrito_PNT1.Utils;
+using System.ComponentModel.DataAnnotations;
+
+namespace Carrito_PNT1.Models
 {
     public class Producto
     {
-        public string nombre { get; set; }
-        public string descripcion { get;set; }
-        public double precioVigente { get; set; }
-        public Boolean activo { get; set; }
-        public Categoria categoria { get; set; }
+        [Key]
+        public int ProductoId { get; set; }
+        [MaxLength(25, ErrorMessage = ErrorViewModel.CaracteresMaximos)]
+        public string Nombre { get; set; }
+        [MaxLength(200, ErrorMessage = ErrorViewModel.CaracteresMaximos)]
+        public string Descripcion { get;set; }
+        [DataType(DataType.Currency, ErrorMessage = ErrorViewModel.TipoInvalido)]
+        [Range(1, int.MaxValue, ErrorMessage = ErrorViewModel.MinMaxRange)]
+        [Display(Name = "Valor por unidad")]
+        public double PrecioVigente { get; set; }
+        public Boolean Activo { get; set; }
+        [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
+        public Categoria Categoria { get; set; }
+        public int CategoriaId { get; set; }
     }
 }

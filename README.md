@@ -47,12 +47,12 @@ Body:
  - Crear el Scaffolding para permitir los CRUD de las entidades al menos solicitadas en el enunciado.
  - Aplicar las adecuaciones y validaciones necesarias en los controladores.  
  - Realizar un sistema de login con al menos los roles equivalentes a <Usuario Cliente> y <Usuario Administrador> (o con permisos elevados).
- - Si el proyecto lo requiere, generar el proceso de registraci贸n. 
+ - Si el proyecto lo requiere, generar el proceso de registración. 
  - Un administrador podría realizar todas tareas que impliquen interacción del lado del negocio (ABM "Alta-Baja-Modificación" de las entidades del sistema y configuraciones en caso de ser necesarias).
  - El <Usuario Cliente> sólo podría tomar acción en el sistema, en base al rol que tiene.
  - Realizar todos los ajustes necesarios en los modelos y/o funcionalidades.
  - Realizar los ajustes requeridos del lado de los permisos.
- - Todo lo referido a la presentación de la aplicaión (cuestiones visuales).
+ - Todo lo referido a la presentación de la aplicación (cuestiones visuales).
  
 <hr />
 

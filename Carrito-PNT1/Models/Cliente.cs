@@ -2,7 +2,7 @@
 {
     public class Cliente : Usuario
     {  
-        public List<Compra>? Compras { get; set; }
-        public List<Carrito>? Carritos { get; set; }
+        public List<Compra> Compras { get; set; }
+        public List<Carrito> Carritos { get; set; }
     }
 }

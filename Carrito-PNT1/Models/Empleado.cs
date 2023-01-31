@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Carrito_PNT1.Models
 {
-    public class Empleado
+    public class Empleado : Usuario
     {
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [MaxLength(50, ErrorMessage = ErrorViewModel.CaracteresMaximos)]

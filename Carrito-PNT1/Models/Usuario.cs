@@ -43,6 +43,7 @@ namespace Carrito_PNT1.Models
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [MinLength(3, ErrorMessage = ErrorViewModel.CaracteresMinimos)]
         [MaxLength(25, ErrorMessage = ErrorViewModel.CaracteresMaximos)]
+        [Display(Name = "Nombre de usuario")]
         public override string UserName
         {
             get { return base.UserName; }

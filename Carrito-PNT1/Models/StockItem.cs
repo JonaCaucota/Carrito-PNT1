@@ -11,6 +11,7 @@ namespace Carrito_PNT1.Models
         public int StockItemId { get; set; }
         [ForeignKey("Sucursal")]
         [Display(Name = "Sucursal")]
+        public int SucursalId { get; set; }
         public Sucursal Sucursal { get; set; }
         public Producto Producto { get; set; }
         [ForeignKey("Producto")]

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Carrito_PNT1.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Carrito_PNT1.Controllers
 {
@@ -16,6 +17,12 @@ namespace Carrito_PNT1.Controllers
         public UsuariosController(DbContext context)
         {
             _context = context;
+        }
+
+        [AllowAnonymous]
+        public IActionResult Registrar()
+        {
+            return View();
         }
 
         // GET: Usuarios

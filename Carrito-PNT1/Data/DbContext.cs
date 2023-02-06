@@ -29,4 +29,6 @@ using Carrito_PNT1.Models;
         public DbSet<Carrito_PNT1.Models.StockItem> StockItem { get; set; }
 
         public DbSet<Carrito_PNT1.Models.Sucursal> Sucursal { get; set; }
+
+        public DbSet<Carrito_PNT1.Models.CarritoItem> CarritoItem { get; set; }
     }

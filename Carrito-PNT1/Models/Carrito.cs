@@ -26,6 +26,10 @@ namespace Carrito_PNT1.Models
                 return resultado;
             } }
 
+        public Carrito()
+        {
+
+        }
         public Carrito(int clienteId)
         {
             this.Activo = true;

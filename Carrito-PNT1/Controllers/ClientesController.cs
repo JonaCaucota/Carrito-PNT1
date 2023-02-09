@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Carrito_PNT1.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Carrito_PNT1.Models;
 
 namespace Carrito_PNT1.Controllers
 {
     public class ClientesController : Controller
     {
         private readonly DbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ClientesController(DbContext context)
+        public ClientesController(DbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+
         // GET: Clientes
+        [Authorize (Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Cliente.ToListAsync());
@@ -33,7 +34,7 @@ namespace Carrito_PNT1.Controllers
             }
 
             var cliente = await _context.Cliente
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (cliente == null)
             {
                 return NotFound();
@@ -53,14 +54,13 @@ namespace Carrito_PNT1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioId,Nombre,Apellido,Telefono,DNI,Direccion,Email,UserName,FechaAlta,Id,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled")] Cliente cliente)
+        public async Task<IActionResult> Create(IdentityUser? user)
         {
-            if (ModelState.IsValid)
+            if (user == null) return RedirectToAction("MensajeError", "Home");
+            Cliente cliente = new Cliente
             {
-                _context.Add(cliente);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+                Email = user.Email
+            };
             return View(cliente);
         }
 
@@ -87,7 +87,7 @@ namespace Carrito_PNT1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,Nombre,Apellido,Telefono,DNI,Direccion,Email,UserName,FechaAlta,Id,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Cliente cliente)
         {
-            if (id != cliente.UsuarioId)
+            if (id != cliente.Id)
             {
                 return NotFound();
             }
@@ -101,7 +101,7 @@ namespace Carrito_PNT1.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClienteExists(cliente.UsuarioId))
+                    if (!ClienteExists(cliente.Id))
                     {
                         return NotFound();
                     }
@@ -124,7 +124,7 @@ namespace Carrito_PNT1.Controllers
             }
 
             var cliente = await _context.Cliente
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (cliente == null)
             {
                 return NotFound();
@@ -154,7 +154,7 @@ namespace Carrito_PNT1.Controllers
 
         private bool ClienteExists(int id)
         {
-            return _context.Cliente.Any(e => e.UsuarioId == id);
+            return _context.Cliente.Any(e => e.Id == id);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Carrito_PNT1.Controllers
             }
 
             var usuario = await _context.Usuario
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (usuario == null)
             {
                 return NotFound();
@@ -94,7 +94,7 @@ namespace Carrito_PNT1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,Nombre,Apellido,Telefono,DNI,Direccion,Email,UserName,FechaAlta,Id,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Usuario usuario)
         {
-            if (id != usuario.UsuarioId)
+            if (id != usuario.Id)
             {
                 return NotFound();
             }
@@ -108,7 +108,7 @@ namespace Carrito_PNT1.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(usuario.UsuarioId))
+                    if (!UsuarioExists(usuario.Id))
                     {
                         return NotFound();
                     }
@@ -131,7 +131,7 @@ namespace Carrito_PNT1.Controllers
             }
 
             var usuario = await _context.Usuario
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (usuario == null)
             {
                 return NotFound();
@@ -161,7 +161,7 @@ namespace Carrito_PNT1.Controllers
 
         private bool UsuarioExists(int id)
         {
-            return _context.Usuario.Any(e => e.UsuarioId == id);
+            return _context.Usuario.Any(e => e.Id == id);
         }
     }
 }

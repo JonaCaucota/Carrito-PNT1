@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Carrito_PNT1.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
-    public class DbContext : Microsoft.EntityFrameworkCore.DbContext
-    {
+public class DbContext : IdentityDbContext
+{
         public DbContext (DbContextOptions<DbContext> options)
             : base(options)
         {

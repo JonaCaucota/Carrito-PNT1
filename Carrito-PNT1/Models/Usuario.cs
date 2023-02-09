@@ -8,8 +8,6 @@ namespace Carrito_PNT1.Models
 {
     public class Usuario : IdentityUser<int>
     {
-        [Key]
-        public int UsuarioId { get; set; }
 
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [MaxLength(50, ErrorMessage = ErrorViewModel.CaracteresMaximos)]

@@ -16,8 +16,12 @@ namespace Carrito_PNT1.Models
         [Display(Name = "Valor por unidad")]
         public double PrecioVigente { get; set; }
         public Boolean Activo { get; set; }
-        [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         public Categoria Categoria { get; set; }
+        [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         public int CategoriaId { get; set; }
+
+        public List<CarritoItem> CarritosItem { get; set; }
+
+        public List<StockItem> StocksItem { get; set; }
     }
 }

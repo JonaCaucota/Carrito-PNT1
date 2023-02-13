@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Carrito_PNT1.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Carrito_PNT1.Controllers
 {
@@ -43,6 +45,7 @@ namespace Carrito_PNT1.Controllers
         }
 
         // GET: Categorias/Create
+        [Authorize(Roles = "EMPLEADO")]
         public IActionResult Create()
         {
             return View();
@@ -53,9 +56,14 @@ namespace Carrito_PNT1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EMPLEADO")]
         public async Task<IActionResult> Create([Bind("CategoriaId,Nombre,Descripcion")] Categoria categoria)
         {
-            if (ModelState.IsValid)
+            if (_context.Categoria.FirstOrDefault(c => c.Nombre == categoria.Nombre) != null)
+            {
+                ModelState.AddModelError("Nombre", "Nombre de categoria ya existente");
+            }
+            else if (ModelState.IsValid)
             {
                 _context.Add(categoria);
                 await _context.SaveChangesAsync();
@@ -63,6 +71,7 @@ namespace Carrito_PNT1.Controllers
             }
             return View(categoria);
         }
+
 
         // GET: Categorias/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -85,6 +94,7 @@ namespace Carrito_PNT1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Empleado")]
         public async Task<IActionResult> Edit(int id, [Bind("CategoriaId,Nombre,Descripcion")] Categoria categoria)
         {
             if (id != categoria.CategoriaId)

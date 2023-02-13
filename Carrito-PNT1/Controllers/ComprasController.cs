@@ -122,7 +122,7 @@ namespace Carrito_PNT1.Controllers
                     crearNuevoCarrito(compra.ClienteId);
                     eliminarItemsDeStock(sucursalNueva, items);
 
-                    _context.Compras.Add(compraNueva);
+                    _context.Compra.Add(compraNueva);
                     await _context.SaveChangesAsync();
                     compra.Total = total;
                     compra.CompraId = compraNueva.CompraId;
@@ -133,108 +133,60 @@ namespace Carrito_PNT1.Controllers
             }
             ViewData["TotalValue"] = 0;
             ViewData["ClienteId"] = compra.ClienteId;
-            ViewData["CarritoId"] = _context.Carritos.First(c => c.ClienteId == compra.ClienteId && c.Activo).CarritoId;
-            ViewData["Sucursales"] = new SelectList(_context.Sucursales, "SucursalId", "Nombre");
+            ViewData["CarritoId"] = _context.Carrito.First(c => c.ClienteId == compra.ClienteId && c.Activo).CarritoId;
+            ViewData["Sucursales"] = new SelectList(_context.Sucursal, "SucursalId", "Nombre");
             return View(compra);
         }
 
-        // GET: Compras/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        private void eliminarItemsDeStock(Sucursal sucursalNueva, List<CarritoItem> items)
         {
-            if (id == null || _context.Compra == null)
+            foreach (var item in items)
             {
-                return NotFound();
+                StockItem itemDeStock = _context.StockItem.First(c => c.SucursalId == sucursalNueva.SucursalId && c.ProductoId == item.ProductoId);
+                sucursalNueva.StockItems.Remove(itemDeStock);
             }
 
-            var compra = await _context.Compra.FindAsync(id);
-            if (compra == null)
-            {
-                return NotFound();
-            }
-            ViewData["CarritoId"] = new SelectList(_context.Carrito, "CarritoId", "CarritoId", compra.CarritoId);
-            ViewData["ClienteId"] = new SelectList(_context.Cliente, "UsuarioId", "Apellido", compra.ClienteId);
-            return View(compra);
         }
 
-        // POST: Compras/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CompraId,ClienteId,CarritoId,Total,Fecha")] Compra compra)
+        private bool hayStock(Sucursal sucursal, List<CarritoItem> items)
         {
-            if (id != compra.CompraId)
-            {
-                return NotFound();
-            }
+            bool hayStock = true;
+            int i = 0;
 
-            if (ModelState.IsValid)
+            while (i < items.Count && hayStock)
             {
-                try
+                foreach (CarritoItem item in items)
                 {
-                    _context.Update(compra);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CompraExists(compra.CompraId))
+                    if (!sucursal.StockItems.Any(c => c.ProductoId == item.ProductoId))
                     {
-                        return NotFound();
+                        hayStock = false;
+                        break;
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    i++;
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["CarritoId"] = new SelectList(_context.Carrito, "CarritoId", "CarritoId", compra.CarritoId);
-            ViewData["ClienteId"] = new SelectList(_context.Cliente, "UsuarioId", "Apellido", compra.ClienteId);
-            return View(compra);
+
+
+            return hayStock;
         }
 
-        // GET: Compras/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        private void crearNuevoCarrito(int id)
         {
-            if (id == null || _context.Compra == null)
-            {
-                return NotFound();
-            }
+            Carrito carritoNuevo = new Carrito(id);
+            _context.Carrito.Add(carritoNuevo);
+        }
 
-            var compra = await _context.Compra
-                .Include(c => c.Carrito)
-                .Include(c => c.Cliente)
-                .FirstOrDefaultAsync(m => m.CompraId == id);
-            if (compra == null)
-            {
-                return NotFound();
-            }
+        private void desactivarCarrito(int carritoId)
+        {
+            _context.Carrito.Find(carritoId).Activo = false;
+        }
+
+        public IActionResult Agradecimiento(NuevaCompra compra)
+        {
+            ViewData["Mensaje"] = "Muchas gracias por confiar en nosotros!";
+            ViewData["Sucursal"] = _context.Sucursal.Find(compra.SucursalId);
 
             return View(compra);
-        }
-
-        // POST: Compras/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Compra == null)
-            {
-                return Problem("Entity set 'DbContext.Compra'  is null.");
-            }
-            var compra = await _context.Compra.FindAsync(id);
-            if (compra != null)
-            {
-                _context.Compra.Remove(compra);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool CompraExists(int id)
-        {
-            return _context.Compra.Any(e => e.CompraId == id);
         }
     }
 }

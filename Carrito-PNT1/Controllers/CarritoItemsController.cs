@@ -6,16 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Carrito_PNT1.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Carrito_PNT1.Controllers
 {
     public class CarritoItemsController : Controller
     {
         private readonly DbContext _context;
+        private readonly UserManager<Usuario> _userManager;
 
-        public CarritoItemsController(DbContext context)
+        public CarritoItemsController(DbContext context, UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: CarritoItems
@@ -46,10 +49,18 @@ namespace Carrito_PNT1.Controllers
         }
 
         // GET: CarritoItems/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            ViewData["CarritoId"] = new SelectList(_context.Carrito, "CarritoId", "CarritoId");
-            ViewData["ProductoId"] = new SelectList(_context.Producto, "ProductoId", "ProductoId");
+
+            ViewData["CarritoId"] = _context.Carrito.First(c => c.ClienteId == int.Parse(_userManager.GetUserId(User)) && c.Activo).CarritoId;
+            if (id == null)
+            {
+                ViewData["ProductoId"] = new SelectList(_context.Producto.Where(c => c.ProductoId == id), "ProductoId", "Nombre");
+            }
+            else
+            {
+                ViewData["ProductoId"] = _context.Producto.First(c => c.ProductoId == id).ProductoId;
+            }
             return View();
         }
 
@@ -58,16 +69,24 @@ namespace Carrito_PNT1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CarritoItemId,CarritoId,ProductoId,Cantidad")] CarritoItem carritoItem)
+        public async Task<IActionResult> Create([Bind("Id,ValorUnitario,Cantidad,CarritoId,ProductoId")] CarritoItem carritoItem)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(carritoItem);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.CarritoItem.Add(carritoItem);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", "Carritos", new { id = _userManager.GetUserId(User) });
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError(string.Empty, $"Error: Producto ya está agregado al carrito");
+                }
+
             }
-            ViewData["CarritoId"] = new SelectList(_context.Carrito, "CarritoId", "CarritoId", carritoItem.CarritoId);
-            ViewData["ProductoId"] = new SelectList(_context.Producto, "ProductoId", "ProductoId", carritoItem.ProductoId);
+            ViewData["CarritoId"] = new SelectList(_context.Carrito.Where(c => c.ClienteId == int.Parse(_userManager.GetUserId(User))), "CarritoId", "CarritoId");
+            ViewData["ProductoNombre"] = new SelectList(_context.Producto.Where(c => c.ProductoId == carritoItem.ProductoId), "Id", "Nombre");
             return View(carritoItem);
         }
 

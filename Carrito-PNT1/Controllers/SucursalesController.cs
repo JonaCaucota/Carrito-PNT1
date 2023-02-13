@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Carrito_PNT1.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Carrito_PNT1.Controllers
 {
@@ -32,8 +34,18 @@ namespace Carrito_PNT1.Controllers
                 return NotFound();
             }
 
-            var sucursal = await _context.Sucursal
-                .FirstOrDefaultAsync(m => m.SucursalId == id);
+            var sucursal_con_items = _context.StockItem
+                .Include(c => c.Sucursal)
+                .Include(c => c.Producto)
+                .Where(c => c.SucursalId == id);
+
+            if (sucursal_con_items.Any())
+            {
+                return View(nameof(DetailsConStock), sucursal_con_items);
+            }
+
+
+            var sucursal = _context.Sucursal.FirstOrDefault(c => c.SucursalId == id);
             if (sucursal == null)
             {
                 return NotFound();
@@ -43,6 +55,7 @@ namespace Carrito_PNT1.Controllers
         }
 
         // GET: Sucursals/Create
+        [Authorize(Roles = "Empleado")]
         public IActionResult Create()
         {
             return View();
@@ -53,13 +66,21 @@ namespace Carrito_PNT1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Empleado")]
         public async Task<IActionResult> Create([Bind("SucursalId,Nombre,Direccion,Telefono,Email")] Sucursal sucursal)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sucursal);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (_context.Sucursal.FirstOrDefault(c => c.Nombre == sucursal.Nombre) == null)
+                {
+                    _context.Add(sucursal);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError("Nombre", "Ya hay una sucursal con ese Nombre,\nIngrese otro");
+                }
             }
             return View(sucursal);
         }
@@ -116,6 +137,7 @@ namespace Carrito_PNT1.Controllers
         }
 
         // GET: Sucursals/Delete/5
+        [Authorize(Roles = "Empleado")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Sucursal == null)
@@ -152,9 +174,31 @@ namespace Carrito_PNT1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Empleado")]
+        public async Task<IActionResult> SumarProducto(int? id)
+        {
+            if (id == null || _context.Sucursal == null)
+            {
+                return NotFound();
+            }
+
+            var sucursal = await _context.Sucursal.FindAsync(id);
+            if (sucursal == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Create", "StocksItems", new { id = id });
+        }
+
         private bool SucursalExists(int id)
         {
             return _context.Sucursal.Any(e => e.SucursalId == id);
+        }
+
+        public IActionResult DetailsConStock(IEnumerable<StockItem> stock)
+        {
+            return View(stock);
         }
     }
 }

@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Carrito_PNT1.Controllers
 {
+    [Authorize]
+    [Authorize(Roles = "Empleado")]
     public class UsuariosController : Controller
     {
         private readonly DbContext _context;
@@ -60,11 +62,11 @@ namespace Carrito_PNT1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioId,Nombre,Apellido,Telefono,DNI,Direccion,Email,UserName,FechaAlta,Id,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Apellido,UserName,Email,Direccion,FechaAlta,Telefono")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
+                _context.Usuario.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -90,9 +92,7 @@ namespace Carrito_PNT1.Controllers
         // POST: Usuarios/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,Nombre,Apellido,Telefono,DNI,Direccion,Email,UserName,FechaAlta,Id,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido,UserName,Email,Direccion,FechaAlta,Telefono")] Usuario usuario)
         {
             if (id != usuario.Id)
             {
@@ -103,12 +103,27 @@ namespace Carrito_PNT1.Controllers
             {
                 try
                 {
-                    _context.Update(usuario);
-                    await _context.SaveChangesAsync();
+                    var personaEnDB = _context.Usuario.Find(usuario.Id);
+                    if (personaEnDB != null)
+                    {
+                        personaEnDB.Nombre = usuario.Nombre;
+                        personaEnDB.Apellido = usuario.Apellido;
+                        personaEnDB.UserName = usuario.UserName;
+                        personaEnDB.Email = usuario.Email;
+                        personaEnDB.Direccion = usuario.Direccion;
+                        personaEnDB.Telefono = usuario.Telefono;
+
+                        _context.Usuario.Update(personaEnDB);
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(usuario.Id))
+                    if (_context.Usuario.Any(e => e.Id == id))
                     {
                         return NotFound();
                     }

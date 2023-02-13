@@ -22,11 +22,12 @@ namespace Carrito_PNT1.Models
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [MinLength(3, ErrorMessage = ErrorViewModel.CaracteresMinimos)]
         [MaxLength(25, ErrorMessage = ErrorViewModel.CaracteresMaximos)]
-        public string Telefono { get; set; }
+        public int Telefono { get; set; }
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [MinLength(3, ErrorMessage = ErrorViewModel.CaracteresMinimos)]
         [MaxLength(25, ErrorMessage = ErrorViewModel.CaracteresMaximos)]
-        public string DNI { get; set; }
+        public int DNI { get; set; }
+
 
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [MinLength(3, ErrorMessage = ErrorViewModel.CaracteresMinimos)]
@@ -52,6 +53,8 @@ namespace Carrito_PNT1.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd}")]
         [Display(Name = "Fecha de creacion")]
         public DateTime FechaAlta { get; set; } = DateTime.Now;
-   
+
+        public string Foto { get; set; } = "product-default.png";
+
     }
 }

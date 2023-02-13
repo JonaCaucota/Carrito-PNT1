@@ -8,6 +8,6 @@ namespace Carrito_PNT1.Models
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [MaxLength(50, ErrorMessage = ErrorViewModel.CaracteresMaximos)]
         [MinLength(3, ErrorMessage = ErrorViewModel.CaracteresMinimos)]
-        public string Legajo { get; set; }
+        public int Legajo { get; set; }
     }
 }

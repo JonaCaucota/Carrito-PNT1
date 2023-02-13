@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Carrito_PNT1.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Carrito_PNT1.Controllers
 {
+    [Authorize(Roles = "Empleado")]
     public class StockItemsController : Controller
     {
         private readonly DbContext _context;
@@ -46,10 +49,18 @@ namespace Carrito_PNT1.Controllers
         }
 
         // GET: StockItems/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            ViewData["ProductoId"] = new SelectList(_context.Producto, "ProductoId", "ProductoId");
-            ViewData["SucursalId"] = new SelectList(_context.Set<Sucursal>(), "SucursalId", "SucursalId");
+            ViewData["ProductoId"] = new SelectList(_context.Producto, "Id", "Nombre");
+            if (id == null)
+            {
+                ViewData["SucursalId"] = new SelectList(_context.Sucursal, "SucursalId", "Nombre");
+            }
+            else
+            {
+                ViewData["SucursalId"] = _context.Sucursal.Find(id).SucursalId;
+            }
+
             return View();
         }
 
@@ -58,16 +69,24 @@ namespace Carrito_PNT1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StockItemId,SucursalId,ProductoId,Cantidad")] StockItem stockItem)
+        public async Task<IActionResult> Create([Bind("Id,Cantidad,SucursalId,ProductoId")] StockItem stockItem)
         {
+            //ERROR EN SAVE CHANGES PORQUE HAY MIGRACIONES CON LAS QUE NO SE AVANZARON POR ERRORES
             if (ModelState.IsValid)
             {
-                _context.Add(stockItem);
+                if (_context.StockItem.Any(c => c.ProductoId == stockItem.ProductoId))
+                {
+                    _context.StockItem.First(c => c.ProductoId == stockItem.ProductoId).Cantidad += stockItem.Cantidad;
+                }
+                else
+                {
+                    _context.StockItem.Add(stockItem);
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductoId"] = new SelectList(_context.Producto, "ProductoId", "ProductoId", stockItem.ProductoId);
-            ViewData["SucursalId"] = new SelectList(_context.Set<Sucursal>(), "SucursalId", "SucursalId", stockItem.SucursalId);
+            ViewData["ProductoId"] = new SelectList(_context.Producto, "Id", "Nombre", stockItem.ProductoId);
+            ViewData["SucursalId"] = new SelectList(_context.Sucursal, "SucursalId", "Nombre", stockItem.SucursalId);
             return View(stockItem);
         }
 
@@ -94,9 +113,9 @@ namespace Carrito_PNT1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StockItemId,SucursalId,ProductoId,Cantidad")] StockItem stockItem)
+        public async Task<IActionResult> Edit(int id, [Bind("Cantidad,SucursalId,ProductoId")] StockItem stockItem)
         {
-            if (id != stockItem.StockItemId)
+            if (id != stockItem.SucursalId)
             {
                 return NotFound();
             }
@@ -110,7 +129,7 @@ namespace Carrito_PNT1.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StockItemExists(stockItem.StockItemId))
+                    if (!StockItemExists(stockItem.SucursalId))
                     {
                         return NotFound();
                     }
@@ -121,8 +140,8 @@ namespace Carrito_PNT1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductoId"] = new SelectList(_context.Producto, "ProductoId", "ProductoId", stockItem.ProductoId);
-            ViewData["SucursalId"] = new SelectList(_context.Set<Sucursal>(), "SucursalId", "SucursalId", stockItem.SucursalId);
+            ViewData["ProductoId"] = new SelectList(_context.Producto, "Id", "Id", stockItem.ProductoId);
+            ViewData["SucursalId"] = new SelectList(_context.Sucursal, "SucursalId", "SucursalId", stockItem.SucursalId);
             return View(stockItem);
         }
 

@@ -6,16 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Carrito_PNT1.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Carrito_PNT1.Controllers
 {
     public class EmpleadosController : Controller
     {
         private readonly DbContext _context;
-
-        public EmpleadosController(DbContext context)
+        private readonly UserManager<Usuario> _userManager;
+        public EmpleadosController(DbContext context, UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Empleadoes
@@ -53,64 +55,40 @@ namespace Carrito_PNT1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Legajo,UsuarioId,Nombre,Apellido,Telefono,DNI,Direccion,Email,UserName,FechaAlta,Id,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Empleado empleado)
+        public async Task<IActionResult> Create([Bind("Legajo,Id,Nombre,Apellido,UserName,Email,Direccion,FechaAlta,Telefono")] Empleado empleado)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(empleado);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(empleado);
-        }
-
-        // GET: Empleadoes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Empleado == null)
-            {
-                return NotFound();
-            }
-
-            var empleado = await _context.Empleado.FindAsync(id);
-            if (empleado == null)
-            {
-                return NotFound();
-            }
-            return View(empleado);
-        }
-
-        // POST: Empleadoes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Legajo,UsuarioId,Nombre,Apellido,Telefono,DNI,Direccion,Email,UserName,FechaAlta,Id,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Empleado empleado)
-        {
-            if (id != empleado.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (!_context.Empleado.Any(e => e.Legajo == empleado.Legajo))
                 {
-                    _context.Update(empleado);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmpleadoExists(empleado.Id))
+                    var resultadoCreate = await _userManager.CreateAsync(empleado, "Password");
+
+                    if (resultadoCreate.Succeeded)
                     {
-                        return NotFound();
+                        var resultadoAddRole = await _userManager.AddToRoleAsync(empleado, "EMPLEADO");
+
+                        if (resultadoAddRole.Succeeded)
+                        {
+                            return RedirectToAction("Index", "Empleados", new { id = empleado.Id });
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(String.Empty, $"No se pudo agregar el rol de EMPLEADO");
+                        }
+
                     }
-                    else
+
+                    foreach (var error in resultadoCreate.Errors)
                     {
-                        throw;
+                        ModelState.AddModelError(String.Empty, error.Description);
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                else
+                {
+                    ModelState.AddModelError("Legajo", "Ya hay una Empleado con ese nro de Legajo,\nIngrese otro");
+                }
+
+
             }
             return View(empleado);
         }

@@ -23,5 +23,7 @@ namespace Carrito_PNT1.Models
         public List<CarritoItem> CarritosItem { get; set; }
 
         public List<StockItem> StocksItem { get; set; }
+
+        public string Foto { get; set; } = "product-default.png";
     }
 }

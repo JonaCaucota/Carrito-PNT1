@@ -12,13 +12,15 @@ namespace Carrito_PNT1.Models
         public Carrito Carrito { get; set; }
         [ForeignKey("Carrito")]
         public int CarritoId { get; set; }
-        [ForeignKey("Producto")]
         public Producto Producto { get; set; }
+        
+        [ForeignKey("Producto")]
         public int ProductoId { get; set; }
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorViewModel.MinMaxRange)]
         public int Cantidad { get; set; } = 0;
 
+        [Display(Name = "Valor por unidad")]
         [DataType(DataType.Currency, ErrorMessage = ErrorViewModel.TipoInvalido)]
         public double ValorUnitario
         {

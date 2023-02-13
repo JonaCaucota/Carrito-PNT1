@@ -1,58 +1,58 @@
-<diagram program="umletino" version="15.0.0"><zoom_level>8</zoom_level><element><id>UMLClass</id><coordinates><x>360</x><y>100</y><w>168</w><h>152</h></coordinates><panel_attributes>Usuario
+<diagram program="umletino" version="15.0.0"><zoom_level>8</zoom_level><element><id>UMLClass</id><coordinates><x>528</x><y>128</y><w>168</w><h>152</h></coordinates><panel_attributes>Usuario
 --
 -nombre: String
+-apellido: String
+-DNI:  String
 -email: String
 -fechaAlta: Date
--password: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>240</x><y>324</y><w>168</w><h>152</h></coordinates><panel_attributes>Cliente
+-password: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>408</x><y>352</y><w>168</w><h>152</h></coordinates><panel_attributes>Cliente
 -
--DNI: String
 -compras: List&lt;Compra&gt;
--carritos: List&lt;Carrito&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>312</x><y>244</y><w>144</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>160;10;10;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>504</x><y>324</y><w>168</w><h>152</h></coordinates><panel_attributes>Empleado
+-carritos: List&lt;Carrito&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>272</y><w>144</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>160;10;10;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>672</x><y>352</y><w>168</w><h>152</h></coordinates><panel_attributes>Empleado
 -
--DNI: String
--legajo: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>432</x><y>244</y><w>168</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;190;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>256</x><y>996</y><w>168</w><h>152</h></coordinates><panel_attributes>Producto
+-legajo: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>272</y><w>168</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;190;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>424</x><y>1024</y><w>168</w><h>152</h></coordinates><panel_attributes>Producto
 --
 -nombre: String
 -descripcion: String
 -precioVigente: Double
 -activo: boolean
--categoria: Categoria</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>256</x><y>764</y><w>168</w><h>152</h></coordinates><panel_attributes>Categoria
+-categoria: Categoria</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>424</x><y>792</y><w>168</w><h>152</h></coordinates><panel_attributes>Categoria
 --
 -nombre: String
 -descripcion: String
--productos: List&lt;Producto&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>296</x><y>908</y><w>72</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
+-productos: List&lt;Producto&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>464</x><y>936</y><w>72</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
 m1=0..*
--productos</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>376</x><y>908</y><w>24</w><h>104</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>840</x><y>772</y><w>168</w><h>152</h></coordinates><panel_attributes>Sucursal
+-productos</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>544</x><y>936</y><w>24</w><h>104</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1008</x><y>800</y><w>168</w><h>152</h></coordinates><panel_attributes>Sucursal
 --
 -nombre: String
 -direccion: String
 -telefono: String
 -email: String
--stockItems: List&lt;StockItem&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>704</x><y>820</y><w>152</w><h>24</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>170;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>704</x><y>852</y><w>152</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
+-stockItems: List&lt;StockItem&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>872</x><y>848</y><w>152</w><h>24</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>170;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>872</x><y>880</y><w>152</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
 -stockItems
-m1=0..*</panel_attributes><additional_attributes>170;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>416</x><y>836</y><w>144</w><h>24</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;160;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>540</y><w>168</w><h>152</h></coordinates><panel_attributes>Carrito
+m1=0..*</panel_attributes><additional_attributes>170;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>584</x><y>864</y><w>144</w><h>24</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;160;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>168</x><y>568</y><w>168</w><h>152</h></coordinates><panel_attributes>Carrito
 --
 -activo: boolean
 -cliente: Cliente
 -carritoItems: List&lt;CarritoItem&gt;
--subtotal: Double</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>80</x><y>388</y><w>176</w><h>168</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>200;10;10;10;10;190</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>764</y><w>168</w><h>152</h></coordinates><panel_attributes>CarritoItem
+-subtotal: Double</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>248</x><y>416</y><w>176</w><h>168</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>200;10;10;10;10;190</additional_attributes></element><element><id>UMLClass</id><coordinates><x>168</x><y>792</y><w>168</w><h>152</h></coordinates><panel_attributes>CarritoItem
 --
 -carrito: Carrito
 -producto: Producto
 -valorUnitario: double
 -cantidad: Integer
--subtotal: Double</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>112</x><y>684</y><w>24</w><h>96</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>540</y><w>168</w><h>152</h></coordinates><panel_attributes>Compra
+-subtotal: Double</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>712</y><w>24</w><h>96</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>528</x><y>568</y><w>168</w><h>152</h></coordinates><panel_attributes>Compra
 --
 -cliente: Cliente
 -carrito: Carrito
--total: Double</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>160</x><y>612</y><w>216</w><h>24</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;250;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>544</x><y>772</y><w>168</w><h>152</h></coordinates><panel_attributes>StockItem
+-total: Double</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>328</x><y>640</y><w>216</w><h>24</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;250;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>712</x><y>800</y><w>168</w><h>152</h></coordinates><panel_attributes>StockItem
 --
 -sucursal: Sucursal
 -producto: Producto
--cantidad: Integer</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>72</x><y>908</y><w>200</w><h>184</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>230;210;10;210;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>312</x><y>468</y><w>144</w><h>88</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
+-cantidad: Integer</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>936</y><w>200</w><h>184</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>230;210;10;210;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>496</y><w>144</w><h>88</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
 m1=0..*
--compras</panel_attributes><additional_attributes>10;10;10;50;160;50;160;90</additional_attributes></element><element><id>Relation</id><coordinates><x>104</x><y>412</y><w>152</w><h>144</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
+-compras</panel_attributes><additional_attributes>10;10;10;50;160;50;160;90</additional_attributes></element><element><id>Relation</id><coordinates><x>272</x><y>440</y><w>152</w><h>144</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
 m1=0..*
--carritos</panel_attributes><additional_attributes>170;20;20;20;20;160</additional_attributes></element><element><id>Relation</id><coordinates><x>32</x><y>684</y><w>80</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
+-carritos</panel_attributes><additional_attributes>170;20;20;20;20;160</additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>712</y><w>80</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
 -carritoItems
-m1=0..*</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>416</x><y>916</y><w>232</w><h>176</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;200;270;200;270;10</additional_attributes></element></diagram>
+m1=0..*</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>584</x><y>944</y><w>232</w><h>176</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;200;270;200;270;10</additional_attributes></element></diagram>
